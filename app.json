@@ -12,7 +12,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/a4753806-5b07-4ad5-90d6-89cffd4204e3"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -28,6 +29,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a4753806-5b07-4ad5-90d6-89cffd4204e3"
+      }
+    },
+    "owner": "ft-leo",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
