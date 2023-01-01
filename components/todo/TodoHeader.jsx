@@ -69,7 +69,7 @@ const TodoHeaderButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   color: black;
-  background-color: ${(props) => (props.active ? "blue" : "gray")};
+  background-color: ${(props) => (props.active ? "skyblue" : "gray")};
 `
 
 const TodoHeaderText = styled.Text`

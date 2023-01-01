@@ -3,7 +3,6 @@ import styled from "@emotion/native"
 
 const TodoBody = ({
   todos,
-  isDone,
   categories,
   onStatusPressEvent,
   onTodoUpdatedEvent,
@@ -17,7 +16,6 @@ const TodoBody = ({
           <TodoContent
             key={todo.id}
             todo={todo}
-            isDone={isDone}
             onStatusPressEvent={onStatusPressEvent}
             onTodoUpdatedEvent={onTodoUpdatedEvent}
             onDeleteTodoPressEvent={onDeleteTodoPressEvent}

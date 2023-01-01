@@ -34,9 +34,9 @@ const TodoContent = ({
   return (
     <TodoContentWrap>
       <TodoContentContainer>
-        {isEdit === false ? (
+        {!isEdit ? (
           <TodoContentTextBox>
-            {isDone === false ? (
+            {!isDone ? (
               <TodoContentText>{title}</TodoContentText>
             ) : (
               <TodoContentCompletedText>{title}</TodoContentCompletedText>
@@ -53,7 +53,7 @@ const TodoContent = ({
           </TodoContentTextBox>
         )}
         <TodoContentButtonBox>
-          {isDone === false ? (
+          {!isDone ? (
             <TodoContentButton onPress={handleStatusPress(true)}>
               <AntDesign name="checksquareo" size={24} color="black" />
             </TodoContentButton>
@@ -65,7 +65,7 @@ const TodoContent = ({
           <TodoContentButton onPress={handleEditTodoPress}>
             <Feather name="edit" size={24} color="black" />
           </TodoContentButton>
-          <TodoContentButton onPress={onDeleteTodoPressEvent(id)}>
+          <TodoContentButton onPress={onDeleteTodoPressEvent(id, isDone)}>
             <FontAwesome name="trash-o" size={24} color="black" />
           </TodoContentButton>
         </TodoContentButtonBox>
@@ -110,10 +110,11 @@ const TodoContentCompletedText = styled.Text`
 `
 
 const TodoContentEditInput = styled.TextInput`
-  width: 90%;
+  width: 95%;
   height: 40px;
   border: 2px solid gray;
   padding-left: 10px;
+  background-color: white;
 `
 
 export default TodoContent
