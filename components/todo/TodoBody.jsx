@@ -3,7 +3,7 @@ import styled from "@emotion/native"
 
 const TodoBody = ({
   todos,
-  categories,
+  category,
   onStatusPressEvent,
   onTodoUpdatedEvent,
   onDeleteTodoPressEvent,
@@ -11,7 +11,7 @@ const TodoBody = ({
   return (
     <TodoBodyWrap>
       {todos
-        .filter((todo) => todo.categories === categories)
+        .filter((todo) => todo.category === category)
         .map((todo) => (
           <TodoContent
             key={todo.id}

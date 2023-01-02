@@ -2,7 +2,7 @@ import styled from "@emotion/native"
 
 const TodoHeader = ({
   text,
-  categories,
+  category,
   onTextChangeEvent,
   onTodoSubmitEvent,
   onTodoCategoriesPressEvent,
@@ -11,19 +11,19 @@ const TodoHeader = ({
     <TodoHeaderWrap>
       <TodoHeaderButtonBox>
         <TodoHeaderButton
-          active={categories === "javascript"}
+          active={category === "javascript"}
           onPress={onTodoCategoriesPressEvent("javascript")}
         >
           <TodoHeaderText>Javascript</TodoHeaderText>
         </TodoHeaderButton>
         <TodoHeaderButton
-          active={categories === "react"}
+          active={category === "react"}
           onPress={onTodoCategoriesPressEvent("react")}
         >
           <TodoHeaderText>React</TodoHeaderText>
         </TodoHeaderButton>
         <TodoHeaderButton
-          active={categories === "codingtest"}
+          active={category === "codingtest"}
           onPress={onTodoCategoriesPressEvent("codingtest")}
         >
           <TodoHeaderText>Coding Test</TodoHeaderText>

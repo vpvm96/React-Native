@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Alert } from "react-native"
 import { FontAwesome, AntDesign, Feather } from "@expo/vector-icons"
 import styled from "@emotion/native"
 
@@ -8,7 +9,7 @@ const TodoContent = ({
   onTodoUpdatedEvent,
   onDeleteTodoPressEvent,
 }) => {
-  const { id, title, isDone } = todo
+  const { id, text, isDone } = todo
   const [isEdit, setIsEdit] = useState(false)
   const [editText, setEditText] = useState("")
 
@@ -27,8 +28,17 @@ const TodoContent = ({
   }
 
   const handleEditTodoPress = () => {
-    setIsEdit(!isEdit)
-    setEditText(title)
+    if (isDone) {
+      Alert.alert("삭제불가", "완료된 Todo 목록은 삭제할 수 없습니다.", [
+        {
+          text: "확인",
+          style: "default",
+        },
+      ])
+    } else {
+      setIsEdit(!isEdit)
+      setEditText(text)
+    }
   }
 
   return (
@@ -37,9 +47,9 @@ const TodoContent = ({
         {!isEdit ? (
           <TodoContentTextBox>
             {!isDone ? (
-              <TodoContentText>{title}</TodoContentText>
+              <TodoContentText>{text}</TodoContentText>
             ) : (
-              <TodoContentCompletedText>{title}</TodoContentCompletedText>
+              <TodoContentCompletedText>{text}</TodoContentCompletedText>
             )}
           </TodoContentTextBox>
         ) : (

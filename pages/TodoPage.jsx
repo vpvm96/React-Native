@@ -1,56 +1,41 @@
 import { useCallback, useEffect, useState } from "react"
 import { Alert } from "react-native"
-import uuid from "react-native-uuid"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import TodoHeader from "../components/todo/TodoHeader"
 import TodoBody from "../components/todo/TodoBody"
+import TodoService from "../api/todoService"
 import styled from "@emotion/native"
 
 const TodoPage = () => {
   const [todos, setTodos] = useState([])
   const [text, setText] = useState("")
-  const [categories, setCategories] = useState("")
+  const [category, setCategory] = useState("")
 
   useEffect(() => {
-    const saveTodos = async () => {
-      await AsyncStorage.setItem("todos", JSON.stringify(todos))
-    }
-    if (todos.length > 0) saveTodos()
-  }, [todos])
-
-  useEffect(() => {
-    const getTodos = async () => {
-      const res_todos = await AsyncStorage.getItem("todos")
-      const res_category = await AsyncStorage.getItem("category")
-
-      setTodos(JSON.parse(res_todos) ?? [])
-      setCategories(res_category ?? "javascript")
-    }
-    getTodos()
+    TodoService.firebaseGetTodosRequest(setTodos)
+    TodoService.firebaseGetCategoryRequest(setCategory)
   }, [])
 
   const handleTextChange = useCallback((text) => {
     setText(text)
   }, [])
 
-  const handleStatusPress = (updated) => {
-    setTodos(todos.map((todo) => (todo.id === updated.id ? updated : todo)))
+  const handleStatusPress = async (updated) => {
+    await TodoService.firebaseChangeIsDoneStatus(updated.id, updated.isDone)
   }
 
-  const handleTodoSubmit = () => {
-    setTodos((prev) => [
-      ...prev,
-      { id: uuid.v4(), title: text, categories, isDone: false },
-    ])
+  const handleTodoSubmit = async () => {
+    const newTodo = {
+      text,
+      category,
+      isDone: false,
+      createdAt: Date.now(),
+    }
+    await TodoService.firebaseCreatedTodoRequest(newTodo)
     setText("")
   }
 
-  const handleTodoUpdated = (updated) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === updated.id ? { ...updated, title: updated.editText } : todo
-      )
-    )
+  const handleTodoUpdated = async (updated) => {
+    await TodoService.firebaseUpdatedTodoRequest(updated.id, updated.editText)
   }
 
   const handleTodoDeletePress = (deleted, status) => () => {
@@ -70,29 +55,30 @@ const TodoPage = () => {
         {
           text: "삭제",
           style: "destructive",
-          onPress: () => setTodos(todos.filter((todo) => todo.id !== deleted)),
+          onPress: async () =>
+            await TodoService.firebaseDeletedTodoRequest(deleted),
         },
       ])
     }
   }
 
-  const handleTodoCategoriesPress = (categories) => async () => {
-    setCategories(categories)
-    await AsyncStorage.setItem("category", categories)
+  const handleTodoCategoriesPress = (category) => async () => {
+    setCategory(category)
+    await TodoService.firebaseUpdatedCategoryRequest(category)
   }
 
   return (
     <TodoPageContainer>
       <TodoHeader
         text={text}
-        categories={categories}
+        category={category}
         onTextChangeEvent={handleTextChange}
         onTodoSubmitEvent={handleTodoSubmit}
         onTodoCategoriesPressEvent={handleTodoCategoriesPress}
       />
       <TodoBody
         todos={todos}
-        categories={categories}
+        category={category}
         onStatusPressEvent={handleStatusPress}
         onTodoUpdatedEvent={handleTodoUpdated}
         onDeleteTodoPressEvent={handleTodoDeletePress}
